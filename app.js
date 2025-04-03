@@ -50,7 +50,7 @@
 
 const express = require('express');
 const cookieParser = require('cookie-parser');
-
+const userMode = require('./models/user');
 const app = express();
 const Path2D = require('path');
 
@@ -62,7 +62,16 @@ app.use(cookieParser());
 
 app.get('/', (req, res) => {
     res.render('index');
-}
-);
+});
 
+app.post('/create', async (req, res) => {
+    let { username, password, email, age } = req.body;
+    let createUser = await userMode.create({
+        username,
+        password,
+        email,
+        age
+    });
+    res.send('User created');
+});
 app.listen(3000);
